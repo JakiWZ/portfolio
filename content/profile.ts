@@ -54,6 +54,7 @@ export const projects: Project[] = [
       "OpenAPI/Swagger documentation",
     ],
     stack: ["Java", "Spring Boot", "JPA/Hibernate", "PostgreSQL", "Flyway", "OpenAPI"],
+    image: "/projects/libreria-api.png",
     repoUrl: "https://github.com/JakiWZ/libreria-api",
   },
   {
