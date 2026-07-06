@@ -18,7 +18,7 @@ export function Hero() {
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-6">
           <a
-            href="/#work"
+            href="#work"
             className="rounded-full bg-accent px-7 py-3 text-sm font-bold text-accent-foreground transition-transform hover:-translate-y-0.5"
           >
             View my work ↗
@@ -31,7 +31,7 @@ export function Hero() {
             Download CV
           </a>
           <a
-            href="/#contact"
+            href="#contact"
             className="border-b-2 border-transparent pb-0.5 text-sm font-semibold text-muted transition-colors hover:border-accent hover:text-accent"
           >
             Contact
