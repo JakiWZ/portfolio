@@ -50,11 +50,30 @@ function isExcluded(file: string): boolean {
   );
 }
 
+const SKIP_DIRS = new Set(["node_modules", ".next", ".git", "public"]);
+
+async function walkSource(dir: string, out: string[] = []): Promise<string[]> {
+  for (const name of await readdir(dir)) {
+    if (SKIP_DIRS.has(name)) continue;
+    const full = path.join(dir, name);
+    const info = await lstat(full);
+    if (info.isDirectory()) await walkSource(full, out);
+    else out.push(full);
+  }
+  return out;
+}
+
 async function collectTargets(): Promise<string[]> {
-  const tracked = execSync("git ls-files", { encoding: "utf8" })
-    .split("\n")
-    .filter(Boolean)
-    .map((file) => path.resolve(file));
+  let tracked: string[];
+  try {
+    tracked = execSync("git ls-files", { encoding: "utf8" })
+      .split("\n")
+      .filter(Boolean)
+      .map((file) => path.resolve(file));
+  } catch {
+    // Not a git repo (e.g. Vercel CI): fall back to full source walk
+    tracked = await walkSource(path.resolve("."));
+  }
   const built = existsSync(".next") ? await walk(path.resolve(".next")) : [];
   const publicDir = existsSync("public")
     ? await walk(path.resolve("public"))
