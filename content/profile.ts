@@ -104,14 +104,14 @@ export const skills: SkillCategory[] = [
   },
   {
     label: "Front end",
-    items: ["TypeScript", "JavaScript", "React", "Next.js", "HTML/CSS", "Tailwind CSS"],
+    items: ["TypeScript", "JavaScript", "React", "Angular", "Next.js", "HTML/CSS", "Tailwind CSS"],
   },
-  { label: "Databases", items: ["PostgreSQL", "MySQL"] },
+  { label: "Databases", items: ["PostgreSQL", "MySQL", "SQLite"] },
   {
     label: "Tools & practices",
-    items: ["Git/GitHub", "Linux (Ubuntu)", "Agile", "AI-assisted development"],
+    items: ["Git/GitHub", "GitLab", "Docker", "Linux (Ubuntu)", "Agile", "AI-assisted development"],
   },
-  { label: "Also", items: ["C", "C++", "Android Studio (basics)"] },
+  { label: "Also", items: ["C", "C++"] },
   { label: "Languages", items: ["Italian (native)", "English (C1, certified)"] },
 ];
 
