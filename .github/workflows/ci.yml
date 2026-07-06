@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - name: Provide GDPR patterns
+        env:
+          GDPR_PATTERNS_SECRET: ${{ secrets.GDPR_PATTERNS }}
+        run: |
+          if [ -z "$GDPR_PATTERNS_SECRET" ]; then
+            echo "::error::GDPR_PATTERNS secret is not set"; exit 1
+          fi
+          printf '%s\n' "$GDPR_PATTERNS_SECRET" > gdpr-patterns.local.txt
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
