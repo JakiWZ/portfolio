@@ -40,10 +40,6 @@ export async function scanFiles(
 const EXCLUDED = [
   path.normalize("public/cv.pdf"), // plain email allowed there by design
   "gdpr-patterns.local.txt",
-  // profile.test.ts uses the forbidden strings as negative-assertion literals
-  // (to verify they do NOT appear in production data) — exclude to avoid
-  // false positives; this file is dev-only and never deployed.
-  path.normalize("tests/profile.test.ts"),
 ];
 
 function isExcluded(file: string): boolean {

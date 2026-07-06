@@ -1,15 +1,22 @@
 import { describe, expect, it } from "vitest";
 import * as content from "@/content/profile";
+import { loadLocalPatterns } from "./helpers/forbidden";
 
 const serialized = JSON.stringify(content);
 
 describe("profile integrity", () => {
-  it("never contains a plain email or obvious personal data", () => {
+  it("never contains a plain email or phone-shaped string", () => {
     expect(serialized).not.toMatch(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i);
     expect(serialized).not.toMatch(/\b33\d{8}\b/); // IT mobile shape
-    expect(serialized.toLowerCase()).not.toContain("redacted-town");
-    expect(serialized).not.toContain("00000");
-    expect(serialized).not.toContain("YYYY");   // DOB year — periods only use >= 2018
+  });
+
+  it("contains none of the private GDPR patterns", () => {
+    // Patterns come from the gitignored file / env at runtime — the repo
+    // itself must NEVER contain the forbidden values, not even in tests.
+    const haystack = serialized.toLowerCase();
+    for (const pattern of loadLocalPatterns()) {
+      expect(haystack).not.toContain(pattern);
+    }
   });
 
   it("uses the exact public location string", () => {

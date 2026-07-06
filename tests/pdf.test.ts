@@ -2,6 +2,7 @@ import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { loadLocalPatterns } from "./helpers/forbidden";
 // Adaptation: pdf-parse v2.4.5 exports a class-based API (PDFParse), not a default function.
 // @types/pdf-parse describe the old v1 API; the installed package is v2 with a different interface.
 import { PDFParse } from "pdf-parse";
@@ -42,9 +43,12 @@ describe("ATS PDF generation", () => {
     expect(lower).toContain(decodeEmail(profile.emailEncoded));
     expect(lower).toContain("puglia, italy");
     expect(lower).toContain("computer science studies");
-    // never in the PDF (public copy): phone shapes, DOB year, degree claims
+    // never in the PDF (public copy): phone shapes, degree claims, private patterns
+    // (the email pattern is skipped — the PDF contains the email by design)
     expect(lower).not.toMatch(/\b33\d{8}\b/);
-    expect(lower).not.toContain("YYYY");
     expect(lower).not.toMatch(/b\.?sc|bachelor|laurea/);
+    for (const pattern of loadLocalPatterns().filter((p) => !p.includes("@"))) {
+      expect(lower).not.toContain(pattern);
+    }
   }, 30_000);
 });
