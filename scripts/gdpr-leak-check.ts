@@ -18,7 +18,7 @@ async function walk(dir: string, out: string[] = []): Promise<string[]> {
     const full = path.join(dir, name);
     const info = await lstat(full); // lstat: symlinks are leaf nodes — no cycle risk
     if (info.isDirectory()) await walk(full, out);
-    else out.push(full);
+    else if (info.isFile()) out.push(full); // skip symlinks to directories (EISDIR risk)
   }
   return out;
 }
@@ -58,7 +58,7 @@ async function walkSource(dir: string, out: string[] = []): Promise<string[]> {
     const full = path.join(dir, name);
     const info = await lstat(full);
     if (info.isDirectory()) await walkSource(full, out);
-    else out.push(full);
+    else if (info.isFile()) out.push(full); // skip symlinks to directories (EISDIR risk)
   }
   return out;
 }
