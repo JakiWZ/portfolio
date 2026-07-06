@@ -1,6 +1,6 @@
 import { execSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { readFile, readdir, stat } from "node:fs/promises";
+import { readFile, readdir, lstat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,7 +16,7 @@ export function loadPatterns(raw: string): string[] {
 async function walk(dir: string, out: string[] = []): Promise<string[]> {
   for (const name of await readdir(dir)) {
     const full = path.join(dir, name);
-    const info = await stat(full);
+    const info = await lstat(full); // lstat: symlinks are leaf nodes — no cycle risk
     if (info.isDirectory()) await walk(full, out);
     else out.push(full);
   }
