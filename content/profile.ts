@@ -69,6 +69,7 @@ export const projects: Project[] = [
       "Editorial design, zero third-party requests",
     ],
     stack: ["Next.js 15", "TypeScript", "Tailwind CSS 4", "React PDF", "Playwright"],
+    repoUrl: "https://github.com/JakiWZ/portfolio",
     liveUrl: "/",
   },
   {
