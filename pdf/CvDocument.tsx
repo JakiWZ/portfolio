@@ -18,7 +18,7 @@ const s = StyleSheet.create({
     color: "#111111",
   },
   name: { fontSize: 22, fontFamily: "Helvetica-Bold", letterSpacing: 0.2 },
-  title: { fontSize: 11, marginTop: 2, color: "#333333" },
+  title: { fontSize: 11, marginTop: 8, color: "#333333" },
   contact: { marginTop: 6, fontSize: 9, color: "#333333" },
   section: { marginTop: 14 },
   heading: {
